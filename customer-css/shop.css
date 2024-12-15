@@ -1,0 +1,194 @@
+/* General Reset */
+body, h1, h2, h3, p, ul, li, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+
+nav {
+    background-color: #005ACD;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+nav ul li {
+    margin-left: 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #BEF0FF;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Section */
+h1 {
+    color: #0078D7;
+    margin-bottom: 10px;
+}
+
+/* Calendar Section */
+.calendar-container {
+    margin: 20px 0;
+    text-align: center;
+}
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.calendar-header button {
+    background: #0078D7;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.calendar-header button:hover {
+    background: #0056A1;
+}
+.days-row {
+    display: flex;
+    justify-content: space-around;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+.day, .empty {
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.day {
+    background: #f1f1f1;
+}
+.day:hover {
+    background: #0078D7;
+    color: #fff;
+}
+
+/* Stock Display */
+.stock-display, .order-section, .review-section {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+}
+.stock-display button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #0078D7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.stock-display button:hover {
+    background: #0056A1;
+}
+
+/* Order Section */
+form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+form button {
+    background: #0078D7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+form button:hover {
+    background: #0056A1;
+}
+
+/* Review Section */
+.review-section p {
+    margin: 10px 0;
+}
+.review-section button {
+    margin: 10px 10px 0 0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#submitOrderButton {
+    background: #28a745;
+    color: #fff;
+}
+#cancelOrderButton {
+    background: #dc3545;
+    color: #fff;
+}
+button:hover {
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .calendar-header {
+        flex-direction: column;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav ul li {
+        margin: 5px 0;
+    }
+    .container {
+        padding: 15px;
+    }
+}

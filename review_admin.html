@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Admin</title>
+    <link rel="stylesheet" href="admin-css/review-admin.css">
+    <script src="review_admin.js" defer></script>
+</head>
+<body style="background-image: url('img/background\ log.webp'); background-size: cover; background-repeat: no-repeat;">
+    <nav>
+        <a href="shop-admin.html" style="color: white;">Shop</a>
+        <a href="orders_admin.html " style="color: white;">Orders</a>
+        <a href="review_admin.html" style="color: white;">Review</a>
+        <a href="profile_admin.html" style="color: white;">Profile</a>
+    </nav>
+    <h1 style="color: black;">User Review</h1>
+    <div id="review">
+        <!-- Latest review dynamically populated here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const reviewContainer = document.getElementById('review');
+            const reviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+
+            // Clear existing content
+            reviewContainer.innerHTML = '';
+
+            if (reviews.length === 0) {
+                reviewContainer.innerHTML = '<p>No reviews available yet.</p>';
+                return;
+            }
+
+            // Get the latest review
+            const latestReview = reviews[reviews.length - 1];
+
+            // Display the latest review
+            const reviewDiv = document.createElement('div');
+            reviewDiv.classList.add('review-item');
+
+            reviewDiv.innerHTML = `
+                <p><strong>Rating:</strong> ${latestReview.rating || 'Not rated'}</p>
+                <p><strong>Comment:</strong> ${latestReview.comment || 'No comment'}</p>
+                <p><strong>Date:</strong> ${latestReview.date}</p>
+            `;
+
+            reviewContainer.appendChild(reviewDiv);
+        });
+    </script>
+</body>
+</html>

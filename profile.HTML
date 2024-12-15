@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="customer-css/profile.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- User Profile Section -->
+    <section class="user-profile">
+        <h2>User Profile</h2>
+        <div class="profile-details" id="profileDetails">
+            <p><strong>Name:</strong> <span id="userName">John Doe</span></p>
+            <p><strong>Email:</strong> <span id="userEmail">johndoe@example.com</span></p>
+            <p><strong>Phone:</strong> <span id="userPhone">+63 123 456 7890</span></p>
+            <p><strong>Address:</strong> <span id="userAddress">123 Main Street, City, Country</span></p>
+            <button id="editBtn" class="btn">Edit Information</button>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div id="editProfileForm" style="display: none;">
+            <h3>Edit Profile Information</h3>
+            <form>
+                <label for="editName">Name:</label>
+                <input type="text" id="editName" placeholder="Enter your name">
+
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" placeholder="Enter your email">
+
+                <label for="editPhone">Phone:</label>
+                <input type="text" id="editPhone" placeholder="Enter your phone number">
+
+                <label for="editAddress">Address:</label>
+                <input type="text" id="editAddress" placeholder="Enter your address">
+
+                <button type="button" id="saveBtn" class="btn">Save</button>
+                <button type="button" id="cancelEditBtn" class="btn">Cancel</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Order Status Section -->
+    <section class="order-status-section">
+        <h2>Order Status</h2>
+        <div id="orderStatus" class="order-status">
+            <!-- Dynamic order status will be displayed here -->
+        </div>
+    </section>
+
+    <!-- Web Ratings Section -->
+    <section class="web-ratings-section">
+        <h2>Web Ratings and Comments</h2>
+        <div id="webRatings" class="web-ratings">
+            <p><strong>Rate our website:</strong></p>
+            <!-- Input for rating -->
+            <label for="websiteRating">Rating (1 to 5):</label>
+            <input type="number" id="websiteRating" min="1" max="5" placeholder="Rate us (1-5)">
+
+            <!-- Textarea for comment -->
+            <label for="websiteComment">Comment:</label>
+            <textarea id="websiteComment" placeholder="Leave your comment"></textarea>
+
+            <!-- Submit button for review -->
+            <button type="button" id="submitReviewBtn" class="btn">Submit</button>
+
+            <div id="currentWebRating">
+                <!-- Display the current rating and comment -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Logout and Delete Account Section -->
+    <section class="account-actions">
+        <button id="logoutBtn" class="btn">Logout</button>
+        <button id="deleteAccountBtn" class="btn delete-btn">Delete Account</button>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to render order status dynamically
+        function renderOrderStatus() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderStatusContainer = document.getElementById('orderStatus');
+            orderStatusContainer.innerHTML = '';  // Clear previous content
+
+            if (orders.length === 0) {
+                orderStatusContainer.innerHTML = "<p>No orders yet.</p>";
+                return;
+            }
+
+            // Loop through orders and display each one
+            orders.forEach((order, index) => {
+                const orderDiv = document.createElement('div');
+                orderDiv.classList.add('order');
+
+                orderDiv.innerHTML = `
+                    <p><strong>Order #${index + 1}</strong></p>
+                    <ul>
+                        <li><strong>Quantity:</strong> ${order.quantity}</li>
+                        <li><strong>Status:</strong> ${order.status}</li>
+                        <li><strong>Date to Deliver:</strong> ${order.date}</li>
+                        <li><strong>Price:</strong> ₱${order.price}</li>
+                    </ul>
+                `;
+
+                orderStatusContainer.appendChild(orderDiv);
+            });
+        }
+
+        // Save reviews to localStorage when clicking Submit button
+        document.getElementById('submitReviewBtn').addEventListener('click', function() {
+            const rating = document.getElementById('websiteRating').value;
+            const comment = document.getElementById('websiteComment').value;
+
+            if (!rating || !comment) {
+                alert('Please provide both a rating and a comment.');
+                return;
+            }
+
+            // Fetch existing reviews or initialize as empty array
+            let reviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+
+            // Add new review
+            reviews.push({ rating, comment, date: new Date().toLocaleString() });
+
+            // Save back to localStorage
+            localStorage.setItem('userReviews', JSON.stringify(reviews));
+
+            displayCurrentWebRating(); // Update displayed rating and comment
+
+            // Clear input fields
+            document.getElementById('websiteRating').value = '';
+            document.getElementById('websiteComment').value = '';
+
+            alert('Thank you for your feedback!');
+        });
+
+        // Display current web rating and comment
+        function displayCurrentWebRating() {
+            const reviews = JSON.parse(localStorage.getItem('userReviews')) || [];
+            const latestReview = reviews[reviews.length - 1] || {};
+            const currentRatingContainer = document.getElementById('currentWebRating');
+
+            currentRatingContainer.innerHTML = `
+                <p><strong>Your current rating:</strong> ${latestReview.rating || 'Not rated yet'}</p>
+                <p><strong>Your comment:</strong> ${latestReview.comment || 'No comment yet'}</p>
+            `;
+        }
+
+        // Edit profile action
+        document.getElementById('editBtn').addEventListener('click', function() {
+            document.getElementById('profileDetails').style.display = 'none';
+            document.getElementById('editProfileForm').style.display = 'block';
+
+            // Populate form with current details
+            document.getElementById('editName').value = document.getElementById('userName').textContent;
+            document.getElementById('editEmail').value = document.getElementById('userEmail').textContent;
+            document.getElementById('editPhone').value = document.getElementById('userPhone').textContent;
+            document.getElementById('editAddress').value = document.getElementById('userAddress').textContent;
+        });
+
+        // Save edited profile data
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            // Get updated values
+            const updatedName = document.getElementById('editName').value;
+            const updatedEmail = document.getElementById('editEmail').value;
+            const updatedPhone = document.getElementById('editPhone').value;
+            const updatedAddress = document.getElementById('editAddress').value;
+
+            // Update profile details
+            document.getElementById('userName').textContent = updatedName;
+            document.getElementById('userEmail').textContent = updatedEmail;
+            document.getElementById('userPhone').textContent = updatedPhone;
+            document.getElementById('userAddress').textContent = updatedAddress;
+
+            // Hide form and show profile details
+            document.getElementById('editProfileForm').style.display = 'none';
+            document.getElementById('profileDetails').style.display = 'block';
+
+            alert('Profile updated successfully!');
+        });
+                      // Cancel edit action
+                      document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                document.getElementById('editProfileForm').style.display = 'none';
+                document.getElementById('profileDetails').style.display = 'block';
+            });
+
+            // Logout action
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                // Clear any session data (if any)
+                alert('You have been logged out.');
+                // Redirect to login page (or home page, if preferred)
+                window.location.href = 'login.html';
+            });
+
+            // Delete account action
+            document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+                const confirmDelete = confirm('Are you sure you want to delete your account? This action cannot be undone.');
+                
+                if (confirmDelete) {
+                    // Clear user data from localStorage
+                    localStorage.removeItem('orders');
+                    localStorage.removeItem('userReviews');
+                    alert('Your account has been deleted.');
+                    // Redirect to homepage or login page after deletion
+                    window.location.href = 'home.html';
+                }
+            });
+
+            // Load and render order status and current web ratings on page load
+            window.onload = function() {
+                renderOrderStatus();
+                displayCurrentWebRating();
+            };
+        </script>
+    </body>
+</html>

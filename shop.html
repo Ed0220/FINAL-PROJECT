@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="customer-css/shop.css">
+</head>
+<body style="background-image: url('img/background\ log.webp'); background-size: cover; background-repeat: no-repeat;">
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="tutorial.html">Tutorial</a></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="shop.html" class="active">Shop</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 style="color: red;">Milk Shop</h1>
+        <p>Select a date to see milk stock availability.</p>
+
+        <!-- Calendar Section -->
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button id="prevMonth">&lt;</button>
+                <h2 id="monthYear"></h2>
+                <button id="nextMonth">&gt;</button>
+            </div>
+            <div class="days-row">
+                <span>Sun</span><span>Mon</span><span>Tue</span>
+                <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <!-- Stock Display -->
+        <div class="stock-display" id="stockDisplay">
+            <h3>Milk Stock</h3>
+            <p>Select a date to check availability.</p>
+        </div>
+
+        <!-- Order Section -->
+        <div class="order-section" style="display:none;" id="orderSection">
+            <h3>Place Your Order</h3>
+            <form id="orderForm">
+                <label for="deliveryDate">Delivery Date:</label>
+                <input type="text" id="deliveryDate" readonly required>
+
+                <label for="quantity">Number of Bottles:</label>
+                <input type="number" id="quantity" min="1" required>
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" required>
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" required>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" required>
+
+                <p><strong>Price per Bottle:</strong> ₱100</p>
+                <p><strong>Total Price:</strong> <span id="totalPrice">₱100</span></p>
+
+                <button type="button" id="reviewButton">Review</button>
+            </form>
+        </div>
+
+        <!-- Review Section -->
+        <div class="review-section" id="reviewSection" style="display:none;">
+            <h3>Review Your Order</h3>
+            <p><strong>Delivery Date:</strong> <span id="reviewDate"></span></p>
+            <p><strong>Quantity:</strong> <span id="reviewQuantity"></span></p>
+            <p><strong>Name:</strong> <span id="reviewName"></span></p>
+            <p><strong>Address:</strong> <span id="reviewAddress"></span></p>
+            <p><strong>Phone Number:</strong> <span id="reviewPhone"></span></p>
+            <p><strong>Total Price:</strong> ₱<span id="reviewTotalPrice"></span></p>
+            <button id="submitOrderButton">Submit</button>
+            <button id="cancelOrderButton">Cancel</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Fetch stock data from localStorage
+        const stockData = JSON.parse(localStorage.getItem('stockData')) || {};
+
+        let selectedDate = '';
+        const calendarGrid = document.getElementById('calendarGrid');
+        const monthYear = document.getElementById('monthYear');
+        const stockDisplay = document.getElementById('stockDisplay');
+        const orderSection = document.getElementById('orderSection');
+        const reviewSection = document.getElementById('reviewSection');
+        let currentDate = new Date();
+
+        // Render Calendar
+        function renderCalendar(date) {
+            calendarGrid.innerHTML = '';
+            const year = date.getFullYear();
+            const month = date.getMonth();
+
+            // Set month and year in header
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            monthYear.textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Fill empty cells for days before the first day
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('span');
+                emptyCell.classList.add('empty');
+                calendarGrid.appendChild(emptyCell);
+            }
+
+            // Add cells for each day
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dayCell = document.createElement('span');
+                dayCell.classList.add('day');
+                dayCell.textContent = day;
+                dayCell.onclick = () => displayStock(dateStr);
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        // Show stock when date clicked
+        function displayStock(date) {
+            selectedDate = date;
+            const stock = stockData[date] || 0;
+            stockDisplay.innerHTML = `
+                <h3>Milk Stock</h3>
+                <p><strong>Date:</strong> ${date}</p>
+                <p><strong>Available Stock:</strong> ${stock} bottles</p>
+                <button onclick="showOrderSection()">Order Now</button>
+            `;
+        }
+
+        // Show order form with pre-filled delivery date
+        function showOrderSection() {
+            if (!selectedDate) {
+                alert("Please select a date first.");
+                return;
+            }
+            document.getElementById('deliveryDate').value = selectedDate;
+            orderSection.style.display = 'block';
+        }
+
+        // Handle Review Button
+        document.getElementById('reviewButton').addEventListener('click', function() {
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const quantity = document.getElementById('quantity').value;
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+
+            if (!quantity || !name || !address || !phone) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const pricePerBottle = 100;
+            const totalPrice = quantity * pricePerBottle;
+
+            document.getElementById('reviewDate').textContent = deliveryDate;
+            document.getElementById('reviewQuantity').textContent = quantity;
+            document.getElementById('reviewName').textContent = name;
+            document.getElementById('reviewAddress').textContent = address;
+            document.getElementById('reviewPhone').textContent = phone;
+            document.getElementById('reviewTotalPrice').textContent = totalPrice;
+
+            orderSection.style.display = 'none';
+            reviewSection.style.display = 'block';
+        });
+
+        // Submit Order
+        document.getElementById('submitOrderButton').addEventListener('click', function() {
+            alert("Order submitted successfully!");
+
+            // Collect order data
+            const orderData = {
+                date: document.getElementById('deliveryDate').value,
+                quantity: document.getElementById('quantity').value,
+                name: document.getElementById('name').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                status: "Pending",  // Order status as Pending
+                price: document.getElementById('reviewTotalPrice').textContent,
+            };
+
+            // Save order to localStorage (you can save multiple orders as an array)
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(orderData);
+            localStorage.setItem("orders", JSON.stringify(orders));
+
+            // Redirect to profile page
+            window.location.href = "profile.html";
+        });
+
+        // Cancel Order
+        document.getElementById('cancelOrderButton').addEventListener('click', function() {
+            reviewSection.style.display = 'none';
+            orderSection.style.display = 'none';
+        });
+
+        // Update total price when quantity changes
+        document.getElementById('quantity').addEventListener('input', function() {
+            const quantity = this.value || 1;
+            const totalPrice = quantity * 100;
+            document.getElementById('totalPrice').textContent = totalPrice;
+        });
+
+        // Navigate calendar months
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar(currentDate);
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar(currentDate);
+        });
+
+        // Initialize Calendar
+        renderCalendar(currentDate);
+    </script>
+</body>
+</html>

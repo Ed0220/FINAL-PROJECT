@@ -1,0 +1,314 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #6DD7FD; /* Light grey background */
+    background-image: url('img/background.jpg'); /* Path to your background image */
+    background-size: cover; /* Ensures the image covers the whole background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
+    color: #333;
+    line-height: 1.7;
+}
+
+/* Header */
+header {
+    background-color: #333;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 3.5em;
+    letter-spacing: 2px;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: #005ACD; /* Sky Blue */
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+nav a:hover {
+    background-color: #00BFFF; /* Light Sky Blue */
+    transform: scale(1.05);
+}
+
+nav a:active {
+    background-color: #1E90FF; /* Dodger Blue */
+}
+
+/* Container for Main Content */
+.container {
+    max-width: 1200px;
+    margin: 80px auto 50px; /* Top margin to avoid nav overlap */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Image Section */
+.image-container {
+    width: 48%;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+}
+
+/* Text Section */
+.text-content {
+    width: 48%;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+.text-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.text-content p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Footer (Optional) */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    font-size: 1.2em;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .image-container, .text-content {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 2.8em;
+    }
+
+    nav a {
+        font-size: 1em;
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5em;
+    }/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #87CEEB; /* Sky blue background */
+    color: #333;
+    line-height: 1.7;
+    min-height: 100vh; /* Ensure it covers the entire screen */
+}
+
+/* Header */
+header {
+    background-color: #333;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 3.5em;
+    letter-spacing: 2px;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: rgba(255, 255, 255, 0.3); /* Transparent background */
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    font-size: 1.2em;
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+nav a:hover {
+    background-color: rgba(0, 191, 255, 0.6); /* Light blue on hover */
+    transform: scale(1.05);
+}
+
+nav a:active {
+    background-color: #00BFFF; /* Light Sky Blue */
+}
+
+/* Fullscreen Container */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+    flex-direction: column;
+    text-align: center;
+}
+
+/* Image Section */
+.image-container {
+    width: 80%; /* Adjust the width of the image */
+    max-width: 800px; /* Maximum width to prevent stretching */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Text Section */
+.text-content {
+    width: 90%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+    padding: 30px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: #333;
+}
+
+.text-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.text-content p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+    .image-container, .text-content {
+        width: 90%;
+    }
+
+    header h1 {
+        font-size: 2.8em;
+    }
+
+    nav a {
+        font-size: 1em;
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5em;
+    }
+
+    nav a {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
+
+    .container {
+        padding: 20px;
+    }
+}
+
+    nav a {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
+
+    .image-container, .text-content {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        padding: 50px 10px;
+    }
+}

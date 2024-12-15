@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Admin</title>
+    <link rel="stylesheet" href="admin-css/order-admin.css">
+    <script src="orders_admin.js" defer></script>
+</head>
+<body style="background-image: url('img/background\ log.webp'); background-size: cover; background-repeat: no-repeat;">
+    <nav>
+        <a href="shop-admin.html" style="color: white;">Shop</a>
+        <a href="orders_admin.html " style="color: white;">Orders</a>
+        <a href="review_admin.html" style="color: white;">Review</a>
+        <a href="profile_admin.html" style="color: white;">Profile</a>
+    </nav>
+    <h1 >Customer Orders</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Quantity</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="orders-table">
+            <!-- Orders dynamically populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to render orders
+        function renderOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const ordersTable = document.getElementById('orders-table');
+            ordersTable.innerHTML = '';
+
+            orders.forEach((order, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.quantity}</td>
+                    <td>${order.name}</td>
+                    <td>${order.address}</td>
+                    <td>₱${order.price}</td>
+                    <td>${order.status}</td>
+                    <td>
+                        ${order.status === 'Pending' ? 
+                            `<button onclick="approveOrder(${index})">Approve</button>
+                             <button onclick="rejectOrder(${index})">Reject</button>
+                             <button onclick="cancelOrder(${index})">Cancel</button>` : 
+                            order.status === 'Approved' ? 
+                            `<button disabled>Approved</button>` : 
+                            `<button disabled>Rejected</button>`}
+                    </td>
+                `;
+                ordersTable.appendChild(row);
+            });
+        }
+
+        // Function to approve order
+        function approveOrder(index) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders[index].status = "Approved";
+            localStorage.setItem('orders', JSON.stringify(orders));
+            renderOrders();
+        }
+
+        // Function to reject order
+        function rejectOrder(index) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders[index].status = "Rejected";
+            localStorage.setItem('orders', JSON.stringify(orders));
+            renderOrders();
+        }
+
+        // Function to cancel order (sets status to "Cancelled" and only shows the "Reject" button)
+        function cancelOrder(index) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders[index].status = "Cancelled";
+            localStorage.setItem('orders', JSON.stringify(orders));
+            renderOrders();
+        }
+
+        // Initialize and render orders on page load
+        renderOrders();
+    </script>
+</body>
+</html>

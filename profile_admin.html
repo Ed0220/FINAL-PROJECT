@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <link rel="stylesheet" href="admin-css/profile-admin.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 0.5em;
+        }
+        .profile-container {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-container input {
+            width: 100%;
+            padding: 1em;
+            margin-bottom: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .profile-container button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1em 2em;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .profile-container button:hover {
+            background-color: #34495e;
+        }
+        .actions {
+            margin-top: 1em;
+        }
+        .btn {
+            background-color: #2980b9;
+            padding: 0.8em 2em;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .btn-logout {
+            background-color: #e74c3c;
+            margin-left: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body style="background-image: url('img/background\ log.webp'); background-size: cover; background-repeat: no-repeat;">
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="shop-admin.html" style="color: white;">Shop</a>
+        <a href="orders_admin.html " style="color: white;">Orders</a>
+        <a href="review_admin.html" style="color: white;">Review</a>
+        <a href="profile_admin.html" style="color: white;">Profile</a>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="profile-container" id="profile-view">
+        <h1>Admin Profile</h1>
+        <p><strong>Name:</strong> <span id="admin-name">[ADMIN NAME]</span></p>
+        <p><strong>Email:</strong> <span id="admin-email">[ADMIN EMAIL]</span></p>
+        <p><strong>Role:</strong> Admin</p>
+        
+        <div class="actions">
+            <button onclick="toggleEditMode()" class="btn">Edit Profile</button>
+            <button onclick="window.location.href='logout.html'" class="btn btn-logout">Logout</button>
+        </div>
+    </div>
+
+    <!-- Edit Profile Section -->
+    <div class="profile-container hidden" id="profile-edit">
+        <h1>Edit Admin Profile</h1>
+        <form id="editProfileForm">
+            <label for="edit-name">Name:</label>
+            <input type="text" id="edit-name" placeholder="Enter name" required>
+
+            <label for="edit-email">Email:</label>
+            <input type="email" id="edit-email" placeholder="Enter email" required>
+
+            <label for="edit-role">Role:</label>
+            <input type="text" id="edit-role" value="Admin" disabled>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        // Load current profile data from localStorage (or a backend service)
+        document.addEventListener('DOMContentLoaded', function() {
+            const name = localStorage.getItem("adminName") || "[ADMIN NAME]";
+            const email = localStorage.getItem("adminEmail") || "[ADMIN EMAIL]";
+            document.getElementById('admin-name').textContent = name;
+            document.getElementById('admin-email').textContent = email;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-email').value = email;
+        });
+
+        // Toggle between profile view and edit mode
+        function toggleEditMode() {
+            document.getElementById('profile-view').classList.toggle('hidden');
+            document.getElementById('profile-edit').classList.toggle('hidden');
+        }
+
+        // Handle form submission and save changes
+        document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const updatedName = document.getElementById('edit-name').value;
+            const updatedEmail = document.getElementById('edit-email').value;
+
+            // Save changes to localStorage (or send to a backend server)
+            localStorage.setItem("adminName", updatedName);
+            localStorage.setItem("adminEmail", updatedEmail);
+
+            // Reflect changes in the profile view
+            document.getElementById('admin-name').textContent = updatedName;
+            document.getElementById('admin-email').textContent = updatedEmail;
+
+            // Switch back to profile view
+            toggleEditMode();
+        });
+    </script>
+</body>
+</html>

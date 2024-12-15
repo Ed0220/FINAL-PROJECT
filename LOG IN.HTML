@@ -1,0 +1,195 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login & Signup</title>
+        <link rel="stylesheet" href="login.css">
+        <style>
+            /* Add basic styles for layout and design */
+            body {
+                font-family: Arial, sans-serif;
+                background-image: url('img/background log.webp');
+                background-size: cover; 
+                background-position: center; 
+                background-repeat: no-repeat; 
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .container {
+                max-width: 400px;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .logo-container {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .logo-container img {
+                width: 100px;
+            }
+            .form-container {
+                display: none;
+            }
+            .form-container.active {
+                display: block;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+            label {
+                margin-bottom: 5px;
+            }
+            input, select, button {
+                margin-bottom: 15px;
+                padding: 10px;
+                font-size: 16px;
+            }
+            button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            .toggle-text {
+                text-align: center;
+            }
+            .toggle-text a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            .toggle-text a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Logo Container -->
+            <div class="logo-container">
+                <img src="img/logo.png" alt="Logo"> <!-- Replace 'logo.png' with your logo file -->
+            </div>
+
+            <!-- Login Form -->
+            <div class="form-container active" id="loginForm">
+                <h2>Login</h2>
+                <form id="login">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+
+                    <label for="role">Login as:</label>
+                    <select id="role" required>
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="customer">Customer</option>
+                    </select>
+
+                    <button type="submit">Login</button>
+                </form>
+                <p class="toggle-text">Don't have an account? <a href="#" id="showSignup">Sign up now</a></p>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="form-container" id="signupForm">
+                <h2>Sign Up</h2>
+                <form id="signup">
+                    <label for="signupName">Full Name:</label>
+                    <input type="text" id="signupName" placeholder="Enter your name" required>
+
+                    <label for="signupEmail">Email:</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required>
+
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p class="toggle-text">Already have an account? <a href="#" id="showLogin">Log in</a></p>
+            </div>
+        </div>
+
+        <script>
+            // Toggle between Login and Signup forms
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const showSignup = document.getElementById('showSignup');
+            const showLogin = document.getElementById('showLogin');
+
+            showSignup.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.classList.remove('active');
+                signupForm.classList.add('active');
+            });
+
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                signupForm.classList.remove('active');
+                loginForm.classList.add('active');
+            });
+
+            // Simulate signup functionality (Save to LocalStorage)
+            document.getElementById('signup').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+
+                // Save user data to LocalStorage
+                const userData = {
+                    name: name,
+                    email: email,
+                    password: password
+                };
+
+                localStorage.setItem(email, JSON.stringify(userData));
+
+                alert(`Signup successful for ${name}! You can now log in.`);
+                signupForm.classList.remove('active');
+                loginForm.classList.add('active');
+            });
+
+            // Simulate login functionality (Validate against LocalStorage)
+            document.getElementById('login').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const role = document.getElementById('role').value;
+
+                if (!role) {
+                    alert("Please select a role.");
+                    return;
+                }
+
+                // Retrieve stored user data from LocalStorage
+                const storedUserData = JSON.parse(localStorage.getItem(email));
+
+                if (storedUserData && storedUserData.password === password) {
+                    if (role === "admin") {
+                        alert("Login successful as Admin! Redirecting to Admin Dashboard...");
+                        window.location.href = "shop-admin.html"; // Redirect to Admin Dashboard
+                    } else if (role === "customer") {
+                        alert("Login successful as Customer! Redirecting to Tutorial...");
+                        window.location.href = "tutorial.html"; // Redirect to Tutorial Page
+                    }
+                } else {
+                    alert("Invalid credentials or role mismatch. Please try again.");
+                }
+            });
+        </script>
+    </body>
+    </html>
